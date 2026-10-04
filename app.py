@@ -6,7 +6,7 @@ import streamlit as st
 
 from src.models import Item, Level, Trail, TrailConditions
 from src.recommendation import recommend_backpack
-from src.ui import ROOT, render_header
+from src.ui import ROOT, render_header, render_recommendation
 
 LEVEL_LABELS = {"baixo": "Baixo", "medio": "Médio", "alto": "Alto"}
 
@@ -54,8 +54,7 @@ def main() -> None:
         st.session_state.pop("recommendation", None)
         st.error(f"Não foi possível montar a mochila: {exc}")
     if "recommendation" in st.session_state:
-        result = st.session_state.recommendation
-        st.success(f"Mochila calculada: {result.peso_total:.2f} kg de {result.trilha.capacidade:.2f} kg.")
+        render_recommendation(st.session_state.recommendation)
     st.caption("TrailPack · Projeto de Algoritmos · Euller & Tiago")
 
 
