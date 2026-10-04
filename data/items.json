@@ -1,0 +1,110 @@
+[
+  {
+    "nome": "Água",
+    "categoria": "Hidratação",
+    "peso": 1.0,
+    "valor_base": 100,
+    "divisivel": true,
+    "essencial": false,
+    "quantidade_padrao": 3.0
+  },
+  {
+    "nome": "Alimentos fracionáveis",
+    "categoria": "Alimentação",
+    "peso": 1.0,
+    "valor_base": 80,
+    "divisivel": true,
+    "essencial": false,
+    "quantidade_padrao": 1.4
+  },
+  {
+    "nome": "Isotônico",
+    "categoria": "Hidratação",
+    "peso": 1.0,
+    "valor_base": 60,
+    "divisivel": true,
+    "essencial": false,
+    "quantidade_padrao": 1.0
+  },
+  {
+    "nome": "Mistura energética",
+    "categoria": "Alimentação",
+    "peso": 1.0,
+    "valor_base": 90,
+    "divisivel": true,
+    "essencial": false,
+    "quantidade_padrao": 0.3
+  },
+  {
+    "nome": "Protetor solar",
+    "categoria": "Proteção climática",
+    "peso": 0.12,
+    "valor_base": 65,
+    "divisivel": false,
+    "essencial": false,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Kit de primeiros socorros",
+    "categoria": "Segurança",
+    "peso": 0.4,
+    "valor_base": 100,
+    "divisivel": false,
+    "essencial": true,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Capa de chuva",
+    "categoria": "Proteção climática",
+    "peso": 0.3,
+    "valor_base": 70,
+    "divisivel": false,
+    "essencial": true,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Lanterna",
+    "categoria": "Segurança",
+    "peso": 0.2,
+    "valor_base": 85,
+    "divisivel": false,
+    "essencial": true,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Power bank",
+    "categoria": "Energia",
+    "peso": 0.25,
+    "valor_base": 60,
+    "divisivel": false,
+    "essencial": false,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Apito",
+    "categoria": "Segurança",
+    "peso": 0.02,
+    "valor_base": 75,
+    "divisivel": false,
+    "essencial": true,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Mapa",
+    "categoria": "Navegação",
+    "peso": 0.05,
+    "valor_base": 70,
+    "divisivel": false,
+    "essencial": false,
+    "quantidade_padrao": 1
+  },
+  {
+    "nome": "Repelente",
+    "categoria": "Higiene",
+    "peso": 0.1,
+    "valor_base": 45,
+    "divisivel": false,
+    "essencial": false,
+    "quantidade_padrao": 1
+  }
+]
