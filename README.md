@@ -44,6 +44,10 @@ Streamlit e os modelos `Trail`, `Item`, `TrailConditions` e `Recommendation`.
 O catálogo, o cálculo de prioridades, o algoritmo e as telas de configuração e
 resultado ainda serão desenvolvidos.
 
+A [especificação do problema e das regras de otimização](docs/especificacao.md)
+detalha o objetivo, o problema real, a distinção entre itens indivisíveis e
+recursos divisíveis e a aplicação do Knapsack Fracionário.
+
 ## Screenshots
 
 As imagens do fluxo de planejamento e recomendação serão adicionadas conforme
