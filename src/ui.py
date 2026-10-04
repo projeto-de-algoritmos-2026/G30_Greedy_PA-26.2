@@ -8,6 +8,63 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def render_optimization(result) -> None:
+    """Mostra os valores utilizados pelo algoritmo no resultado submetido."""
+    st.subheader("Como a mochila foi otimizada")
+    if not result.itens:
+        st.info("Não há itens selecionados para mostrar na tabela de otimização.")
+        return
+
+    reserved_weight = sum(
+        item.peso_total for item in result.itens if item.essencial or not item.divisivel
+    )
+    remaining = max(0.0, result.trilha.capacidade - reserved_weight)
+    st.write(
+        f"**1. Reservar os itens obrigatórios e equipamentos selecionados:** "
+        f"{reserved_weight:.3f} kg. "
+        f"**2. Otimizar os consumíveis nos {remaining:.3f} kg restantes:** "
+        "selecionar primeiro os recursos com maior Valor/Peso."
+    )
+    st.caption(
+        "Os itens reservados aparecem primeiro. Em seguida, os recursos aparecem "
+        "na ordem de seleção do Knapsack Fracionário. Valor é a utilidade contextual "
+        "por unidade; Peso é o peso por unidade em kg. Valor/Peso indica pontos por kg. "
+        "A quantidade selecionada pode ser fracionária para consumíveis."
+    )
+    st.dataframe(
+        [
+            {
+                "Item": item.nome,
+                "Valor": item.valor_base,
+                "Peso": item.peso,
+                "Valor/Peso": item.valor_base / item.peso,
+                "Quantidade selecionada": item.quantidade_padrao,
+            }
+            for item in result.itens
+        ],
+        column_config={
+            "Valor": st.column_config.NumberColumn(
+                "Valor", help="Utilidade por unidade, já ajustada às condições da trilha.", format="%.2f"
+            ),
+            "Peso": st.column_config.NumberColumn(
+                "Peso", help="Peso de uma unidade do item, em kg.", format="%.3f"
+            ),
+            "Valor/Peso": st.column_config.NumberColumn(
+                "Valor/Peso", help="Utilidade por kg: Valor dividido por Peso.", format="%.2f"
+            ),
+            "Quantidade selecionada": st.column_config.NumberColumn(
+                "Quantidade selecionada", help="Quantidade efetivamente incluída na mochila.", format="%.3f"
+            ),
+        },
+        use_container_width=True,
+        hide_index=True,
+    )
+    st.caption(
+        "Peso incluído = Peso × Quantidade selecionada. "
+        "Utilidade incluída = Valor × Quantidade selecionada."
+    )
+
+
 def render_header() -> None:
     artwork = base64.b64encode((ROOT / 'assets/trail-landscape.svg').read_bytes()).decode()
     st.markdown('''<style>
@@ -80,6 +137,7 @@ def render_recommendation(result) -> None:
             for item in result.itens)
         checklist += f"\n\nPeso total: {result.peso_total:.2f} / {result.trilha.capacidade:.2f} kg\n"
         st.download_button("↓ Levar meu checklist", checklist, file_name="trailpack-checklist.txt", mime="text/plain")
+    render_optimization(result)
     for warning in result.avisos:
         st.info(warning)
     st.caption("A pontuação ajuda a comparar recursos. Ela não garante quantidades suficientes de água, alimentos ou equipamentos para o percurso.")

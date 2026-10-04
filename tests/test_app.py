@@ -144,3 +144,60 @@ def test_zero_quantity_excludes_selected_resource():
 
     assert not app.error
     assert "Água" not in {item.nome for item in app.session_state.recommendation.itens}
+
+
+def optimization_table(app):
+    return next(frame.value for frame in app.dataframe if "Valor/Peso" in frame.value.columns)
+
+
+def test_optimization_table_preserves_selection_order_and_contextual_values():
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
+    app.button(key="scenario_travessia").click().run()
+    submit(app)
+
+    result = app.session_state.recommendation
+    table = optimization_table(app)
+    assert list(table.columns) == ["Item", "Valor", "Peso", "Valor/Peso", "Quantidade selecionada"]
+    assert list(table["Item"]) == [item.nome for item in result.itens]
+    assert list(table["Valor"]) == pytest.approx([item.valor_base for item in result.itens])
+    assert list(table["Peso"]) == pytest.approx([item.peso for item in result.itens])
+    assert list(table["Valor/Peso"]) == pytest.approx([item.valor_base / item.peso for item in result.itens])
+    assert list(table["Quantidade selecionada"]) == pytest.approx([item.quantidade_padrao for item in result.itens])
+    resources = table[[not item.essencial and item.divisivel for item in result.itens]]
+    assert list(resources["Valor/Peso"]) == sorted(resources["Valor/Peso"], reverse=True)
+
+
+def test_optimization_table_distinguishes_unit_weight_from_fractional_quantity():
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
+    for checkbox in app.checkbox:
+        if checkbox.key and checkbox.key.startswith("inventory_") and checkbox.key.endswith("_selected"):
+            checkbox.set_value(checkbox.key == "inventory_0_selected")
+    app.number_input(key="inventory_0_weight").set_value(2.0)
+    app.number_input(key="capacidade").set_value(1.25)
+    app.number_input(key="temperatura").set_value(30.0)
+    app.number_input(key="duracao").set_value(7.0)
+    app.checkbox(key="agua_disponivel").set_value(False)
+    submit(app)
+
+    table = optimization_table(app)
+    row = table.iloc[0]
+    assert row["Item"] == "Água"
+    assert row["Valor"] == pytest.approx(273)
+    assert row["Peso"] == 2
+    assert row["Valor/Peso"] == pytest.approx(136.5)
+    assert row["Quantidade selecionada"] == pytest.approx(0.625)
+    assert row["Peso"] * row["Quantidade selecionada"] == pytest.approx(1.25)
+
+    app.number_input(key="inventory_0_weight").set_value(1.0).run()
+    assert optimization_table(app).equals(table)
+
+
+def test_empty_backpack_has_no_optimization_table():
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
+    for checkbox in app.checkbox:
+        if checkbox.key and checkbox.key.startswith("inventory_") and checkbox.key.endswith("_selected"):
+            checkbox.set_value(False)
+    submit(app)
+
+    assert not app.dataframe
+    assert any("tabela de otimização" in message.value for message in app.info)
