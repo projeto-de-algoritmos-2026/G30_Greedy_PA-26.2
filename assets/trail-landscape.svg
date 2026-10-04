@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b9d2bf"/><stop offset="1" stop-color="#f3e0b4"/></linearGradient><linearGradient id="front" x2="1" y2="1"><stop stop-color="#235849"/><stop offset="1" stop-color="#102f2a"/></linearGradient></defs>
+<path fill="url(#sky)" d="M0 0h1600v620H0z"/><circle cx="1210" cy="140" r="68" fill="#fff0bf"/>
+<path d="M0 360L190 170 340 330 565 70 790 340 980 135 1150 300 1350 100 1600 330V620H0" fill="#8ba99a"/>
+<path d="M430 230L565 70 675 218 590 182 559 138 511 205zM1260 217l90-117 90 110-92-42z" fill="#e4e7d6"/>
+<path d="M0 470L240 300 420 400 720 230 945 440 1200 270 1600 380V620H0" fill="#527f70"/>
+<path d="M0 455Q300 350 580 500T1030 440Q1350 290 1600 440V620H0" fill="url(#front)"/>
+<path d="M920 620Q1200 510 1070 476T1200 410Q1280 389 1300 390Q1220 420 1160 432T1140 480Q1290 531 1120 620" fill="#c4b68a"/>
+<g fill="#183d32"><path d="M80 460l50-120 50 120h-35v60h-30v-60zM190 420l36-95 36 95h-25v70h-22v-70zM1450 440l48-140 48 140h-34v65h-28v-65zM1360 440l32-90 32 90h-22v50h-20v-50z"/></g>
+<g transform="translate(1124 466)"><circle cy="-28" r="6" fill="#ffe1a7"/><path d="M-4-20h10l4 24H-7z" fill="#e5a454"/><path d="M-4 3l-6 19M5 3l8 16" stroke="#18332c" stroke-width="5"/><path d="M-6-17l-8 17M8-16l10 12" stroke="#e5a454" stroke-width="4"/><path d="M20-8l-2 31" stroke="#ead7a3" stroke-width="2"/></g>
+</svg>
