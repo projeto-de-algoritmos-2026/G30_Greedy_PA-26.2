@@ -1,0 +1,22 @@
+[
+  {
+    "id": "sol", "titulo": "Rota do sol", "icone": "☀️", "nivel": "Explorador",
+    "descricao": "Percurso curto e quente. Equilibre hidratação e uma mochila leve.",
+    "trilha": {"nome": "Rota do sol", "distancia": 8.0, "duracao": 3.0, "temperatura": 32.0, "dificuldade": "baixo", "chuva": "baixo", "isolamento": "baixo", "agua_disponivel": false, "pessoas": 1, "capacidade": 4.0}
+  },
+  {
+    "id": "travessia", "titulo": "Além do horizonte", "icone": "⛰️", "nivel": "Expedição",
+    "descricao": "Uma longa travessia isolada. Cada grama disputa espaço na mochila.",
+    "trilha": {"nome": "Além do horizonte", "distancia": 20.0, "duracao": 8.0, "temperatura": 30.0, "dificuldade": "alto", "chuva": "baixo", "isolamento": "alto", "agua_disponivel": false, "pessoas": 1, "capacidade": 5.0}
+  },
+  {
+    "id": "frio", "titulo": "Serra gelada", "icone": "❄️", "nivel": "Altitude",
+    "descricao": "O frio muda as prioridades. Prepare a carga para uma manhã na serra.",
+    "trilha": {"nome": "Serra gelada", "distancia": 12.0, "duracao": 5.0, "temperatura": 5.0, "dificuldade": "medio", "chuva": "baixo", "isolamento": "medio", "agua_disponivel": true, "pessoas": 1, "capacidade": 6.0}
+  },
+  {
+    "id": "chuva", "titulo": "Caminho das águas", "icone": "🌧️", "nivel": "Tempo fechado",
+    "descricao": "Chuva no caminho e proteção em foco. Explore uma trilha de mata úmida.",
+    "trilha": {"nome": "Caminho das águas", "distancia": 10.0, "duracao": 4.0, "temperatura": 19.0, "dificuldade": "medio", "chuva": "alto", "isolamento": "medio", "agua_disponivel": true, "pessoas": 1, "capacidade": 4.5}
+  }
+]

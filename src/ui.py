@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def render_header() -> None:
     artwork = base64.b64encode((ROOT / 'assets/trail-landscape.svg').read_bytes()).decode()
     st.markdown('''<style>
-    .block-container {max-width:1180px;padding-top:2rem;padding-bottom:3rem;}
+    .block-container {max-width:1180px;padding-top:4.5rem;padding-bottom:3rem;}
     h1,h2,h3 {letter-spacing:-.035em;}
     .brand {font-size:1.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:1rem;}
     .brand span {font-size:.7rem;letter-spacing:.16em;margin-left:1rem;color:#677b6f;}
@@ -25,6 +25,10 @@ def render_header() -> None:
     [data-testid="stMetric"] {background:#fffdf6;border:1px solid #dee3d7;border-radius:16px;padding:16px;}
     [data-testid="stForm"] {background:#fffdf6;border-radius:20px;}
     div.stButton > button, div.stFormSubmitButton > button {border-radius:12px;min-height:46px;}
+    @media(min-width:641px) and (max-width:1000px) {
+      [data-testid="stHorizontalBlock"] {flex-wrap:wrap;}
+      [data-testid="stColumn"] {min-width:calc(50% - 1rem);flex:1 1 calc(50% - 1rem);}
+    }
     @media(max-width:640px) {.hero {padding:25px;}.hero h1 {font-size:2.35rem;}.brand span {display:none;}}
     </style>''', unsafe_allow_html=True)
     st.markdown('<div class="brand">🎒 TrailPack <span>MENOS PESO. MAIS CAMINHO.</span></div>', unsafe_allow_html=True)

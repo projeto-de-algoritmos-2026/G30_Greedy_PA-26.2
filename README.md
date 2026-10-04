@@ -39,19 +39,23 @@ subproblema fracionário, considerando valores lineares e a capacidade restante
 após a reserva dos essenciais. A ordenação terá complexidade de tempo
 **O(n log n)**, seguida de uma seleção **O(n)**, para `n` recursos divisíveis.
 
-**Estado atual:** estão implementados a estrutura inicial, a tela de entrada do
-Streamlit e os modelos `Trail`, `Item`, `TrailConditions` e `Recommendation`.
-O catálogo, o cálculo de prioridades, o algoritmo e as telas de configuração e
-resultado ainda serão desenvolvidos.
-
-A [especificação do problema e das regras de otimização](docs/especificacao.md)
-detalha o objetivo, o problema real, a distinção entre itens indivisíveis e
-recursos divisíveis e a aplicação do Knapsack Fracionário.
+**Estado atual:** o catálogo, o perfil da trilha, as prioridades contextuais,
+a reserva de essenciais e o Knapsack Fracionário estão integrados à interface.
+É possível configurar o percurso, montar a mochila, consultar o resultado e
+baixar um checklist. Quatro cenários simulados preenchem o formulário: Rota do
+sol, Além do horizonte, Serra gelada e Caminho das águas. A seleção e edição do
+estoque, as justificativas detalhadas e a comparação jogador × algoritmo
+permanecem nas próximas etapas.
 
 ## Screenshots
 
-As imagens do fluxo de planejamento e recomendação serão adicionadas conforme
-as respectivas telas forem implementadas.
+![Expedições e visual do TrailPack](docs/interface-expedicoes.png)
+
+*Ilustração de trilha e seleção de cenários simulados.*
+
+![Resumo da mochila](docs/interface-mochila.png)
+
+*Peso, espaço restante e pontos de utilidade da última montagem.*
 
 ## Instalação
 
@@ -95,8 +99,7 @@ streamlit run app.py
 O Streamlit informará o endereço local da aplicação, normalmente
 `http://localhost:8501`.
 
-O diretório `tests/` está reservado para os testes automatizados. Quando forem
-adicionados, poderão ser executados com:
+Para executar os testes automatizados:
 
 ```bash
 python -m pytest -q
@@ -104,17 +107,19 @@ python -m pytest -q
 
 ## Uso
 
-Na versão atual, iniciar a aplicação exibe a tela inicial do TrailPack e um
-aviso de que o projeto está em desenvolvimento.
+1. Escolha uma das quatro expedições ou preencha seu próprio percurso.
+2. Ajuste distância, duração, clima, dificuldade, isolamento, água disponível,
+   número de pessoas e capacidade total de carga.
+3. Clique em **Montar minha mochila**. O sistema usa as quantidades do catálogo
+   inicial, reserva os essenciais e otimiza os consumíveis na carga restante.
+4. Confira peso, capacidade restante, pontos de utilidade e as tabelas de itens.
+5. Baixe o checklist para revisar a seleção. Após editar o percurso, clique
+   novamente em **Montar minha mochila** para atualizar o resultado.
 
-O fluxo planejado para as próximas etapas é:
-
-1. Informar os dados da trilha, a quantidade de pessoas e a capacidade da mochila.
-2. Selecionar os itens disponíveis e ajustar seus pesos e quantidades.
-3. Acionar **Montar minha mochila** para calcular prioridades, reservar os
-   essenciais e otimizar os recursos divisíveis.
-4. Consultar os itens recomendados, as quantidades, o peso total, a capacidade
-   restante e as justificativas de prioridade.
+A capacidade e o estoque são totais para o grupo. Os equipamentos indivisíveis
+opcionais não são incluídos automaticamente e aparecem em um aviso. Se os
+itens essenciais não couberem, a interface informa o conflito. Os pontos são
+heurísticos: não garantem suficiência dos recursos para uma trilha real.
 
 ## Outros
 
@@ -128,9 +133,17 @@ TrailPack/
 ├── .gitignore
 ├── src/
 │   ├── __init__.py
-│   └── models.py       # Modelos de trilha, condições, itens e recomendação
-├── data/               # Catálogo e cenários a serem adicionados
-├── tests/              # Testes a serem adicionados
+│   ├── models.py       # Contratos de domínio
+│   ├── trail_profile.py
+│   ├── priority_engine.py
+│   ├── essential_items.py
+│   ├── knapsack.py
+│   ├── recommendation.py
+│   ├── scenarios.py
+│   └── ui.py
+├── assets/             # Ilustração vetorial local da paisagem
+├── data/               # Catálogo e quatro cenários simulados
+├── tests/              # Testes automatizados
 └── docs/               # Documentação complementar
 ```
 
