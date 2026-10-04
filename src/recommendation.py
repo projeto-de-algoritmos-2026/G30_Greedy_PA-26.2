@@ -9,23 +9,29 @@ from .models import Item, Recommendation, Trail
 from .priority_engine import calculate_priorities
 
 
-def recommend_backpack(trail: Trail, items: Iterable[Item]) -> Recommendation:
+def recommend_backpack(
+    trail: Trail, items: Iterable[Item], *, include_optional_equipment: bool = False
+) -> Recommendation:
     """Calcula a mochila sem alterar o catálogo ou multiplicar disponibilidades.
 
     A capacidade é a carga total informada para o grupo; pessoas não duplicam
     os recursos disponíveis. Indivisíveis opcionais aguardam seleção explícita
-    na etapa de customização e são indicados nos avisos.
+    na etapa de customização e são indicados nos avisos. Quando
+    include_optional_equipment=True, a entrada representa a seleção explícita
+    do usuário: esses equipamentos também têm seu peso reservado.
     """
     priorities = calculate_priorities(items, trail)
     selection = select_essential_items(
         (priority.as_knapsack_item() for priority in priorities), trail.capacidade
     )
-    optimized = fractional_knapsack(
-        selection.recursos_otimizaveis, selection.capacidade_restante
-    )
-    selected = selection.essenciais + optimized
+    equipment = selection.itens_opcionais if include_optional_equipment else ()
+    remaining = selection.capacidade_restante - sum(item.peso_total for item in equipment)
+    if remaining < 0:
+        raise ValueError("Peso dos equipamentos selecionados excede a capacidade da mochila.")
+    optimized = fractional_knapsack(selection.recursos_otimizaveis, remaining)
+    selected = selection.essenciais + equipment + optimized
     warnings = []
-    if selection.itens_opcionais:
+    if selection.itens_opcionais and not include_optional_equipment:
         names = ", ".join(item.nome for item in selection.itens_opcionais)
         warnings.append(f"Equipamentos opcionais não incluídos automaticamente: {names}.")
     if not selected:

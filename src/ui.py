@@ -42,7 +42,7 @@ def render_header() -> None:
 def render_recommendation(result) -> None:
     """Exibe o resultado submetido, sem depender de alterações no formulário."""
     st.divider()
-    st.subheader("02 · Sua mochila, pronta para revisar")
+    st.subheader("03 · Sua mochila, pronta para revisar")
     st.write(f"**{result.trilha.nome}** · {result.trilha.distancia:g} km · {result.trilha.duracao:g} h · {result.trilha.pessoas} pessoa(s)")
     st.caption("Resultado da última montagem. Após editar o percurso, clique em Montar minha mochila para recalcular.")
     weight, space, value = st.columns(3)
@@ -53,10 +53,10 @@ def render_recommendation(result) -> None:
     st.progress(min(1.0, max(0.0, used)), text=f"Carga usada: {used:.0%} de {result.trilha.capacidade:g} kg")
     if result.itens:
         st.success("✦ Planejamento montado · Confira os itens antes de sair.")
-        essentials, resources = st.tabs(["🛡️ Essenciais reservados", "💧 Recursos otimizados"])
+        essentials, resources = st.tabs(["🛡️ Itens reservados", "💧 Recursos otimizados"])
         for panel, essential in ((essentials, True), (resources, False)):
             with panel:
-                selected = [item for item in result.itens if item.essencial == essential]
+                selected = [item for item in result.itens if (item.essencial or not item.divisivel) == essential]
                 if not selected:
                     st.info("Nenhum item neste grupo para a capacidade informada.")
                 else:

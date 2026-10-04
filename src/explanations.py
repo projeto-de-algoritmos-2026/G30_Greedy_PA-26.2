@@ -39,6 +39,8 @@ def explain_item(item: Item, trail: Trail) -> list[str]:
         reasons.append("As condições informadas mantêm a utilidade base desta categoria.")
     if item.essencial:
         reasons.append("Item marcado como essencial: peso reservado antes da otimização.")
+    elif not item.divisivel:
+        reasons.append("Equipamento selecionado pelo usuário: peso reservado antes da otimização.")
     else:
         reasons.append("Recurso selecionado pela utilidade por kg na capacidade restante.")
     return reasons

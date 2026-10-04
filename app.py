@@ -5,6 +5,7 @@ import json
 import streamlit as st
 
 from src.models import Item, Level, Trail, TrailConditions
+from src.item_editor import render_custom_item_form, render_item_editor
 from src.recommendation import recommend_backpack
 from src.scenarios import load_scenarios
 from src.ui import ROOT, render_header, render_recommendation
@@ -35,7 +36,7 @@ def render_scenarios() -> None:
         st.info(f"Rota carregada: {st.session_state.active_scenario}. Ajuste os dados e monte sua mochila.")
 
 
-def trail_form() -> Trail | None:
+def trail_form(items: list[Item]) -> tuple[Trail, tuple[Item, ...]] | None:
     defaults = {"nome": "Minha próxima aventura", "distancia": 12.0, "duracao": 4.0,
                 "dificuldade": "medio", "isolamento": "baixo", "temperatura": 25.0,
                 "chuva": "baixo", "pessoas": 1, "capacidade": 6.0, "agua_disponivel": True}
@@ -58,12 +59,14 @@ def trail_form() -> Trail | None:
             capacity = st.number_input("Capacidade total de carga (kg)", min_value=0.0, value=None, step=0.5, key="capacidade")
         water = st.checkbox("Há pontos de água durante o percurso", key="agua_disponivel")
         st.caption("A carga e o estoque são totais para o grupo. Mais pessoas não multiplicam os itens disponíveis.")
+        selected_records = render_item_editor(items)
         submitted = st.form_submit_button("Montar minha mochila →", type="primary", use_container_width=True)
     if not submitted:
         return None
-    return Trail(name, distance, duration,
+    trail = Trail(name, distance, duration,
                  TrailConditions(temperature, Level(difficulty), Level(rain), Level(isolation), water),
                  capacity, people)
+    return trail, tuple(Item(**record) for record in selected_records)
 
 
 def main() -> None:
@@ -71,15 +74,14 @@ def main() -> None:
     render_header()
     st.caption("PLANEJADOR DE EXPEDIÇÃO · ALGORITMOS GULOSOS")
     render_scenarios()
-    with st.expander("🎒 O que está disponível nesta versão?"):
-        st.write("Usamos o catálogo inicial do projeto. Seleção e edição de itens chegarão na próxima etapa.")
-        st.write("Lanterna, apito, capa de chuva e kit de primeiros socorros são reservados primeiro. Água e alimentos usam o espaço restante.")
     try:
-        trail = trail_form()
-        if trail is not None:
+        catalog = [Item(**entry) for entry in json.loads((ROOT / "data/items.json").read_text(encoding="utf-8"))]
+        render_custom_item_form(catalog)
+        submission = trail_form(catalog + st.session_state.custom_items)
+        if submission is not None:
             st.session_state.pop("recommendation", None)
-            items = [Item(**entry) for entry in json.loads((ROOT / "data/items.json").read_text(encoding="utf-8"))]
-            st.session_state.recommendation = recommend_backpack(trail, items)
+            trail, items = submission
+            st.session_state.recommendation = recommend_backpack(trail, items, include_optional_equipment=True)
     except (ValueError, OSError) as exc:
         st.session_state.pop("recommendation", None)
         st.error(f"Não foi possível montar a mochila: {exc}")
