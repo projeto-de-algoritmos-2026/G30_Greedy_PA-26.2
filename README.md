@@ -13,6 +13,9 @@
 
 O link para o vídeo de apresentação será adicionado após a gravação.
 
+O [roteiro de cinco minutos](docs/roteiro_video.md) está preparado para revisão
+em dupla e inclui as pendências finais de entrega.
+
 ## Sobre
 
 O **TrailPack** é um projeto de aplicação web para auxiliar no planejamento de
