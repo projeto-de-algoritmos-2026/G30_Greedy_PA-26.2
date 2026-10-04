@@ -68,6 +68,13 @@ def render_recommendation(result) -> None:
                         for item in selected
                     ], use_container_width=True, hide_index=True)
         st.caption("Quantidade: água e isotônico em litros; alimentos e mistura energética em kg; equipamentos em unidades.")
+        st.subheader("Por que estes itens foram recomendados?")
+        for item in result.itens:
+            reasons = result.justificativas.get(item.nome, [])
+            if reasons:
+                with st.expander(item.nome):
+                    for reason in reasons:
+                        st.write(f"• {reason}")
         checklist = f"TrailPack — {result.trilha.nome}\n\n" + "\n".join(
             f"[ ] {item.nome}: {item.quantidade_padrao:.3g} un. do catálogo ({item.peso_total:.3f} kg)"
             for item in result.itens)

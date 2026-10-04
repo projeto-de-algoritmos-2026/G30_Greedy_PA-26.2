@@ -3,6 +3,7 @@
 from collections.abc import Iterable
 
 from .essential_items import select_essential_items
+from .explanations import explain_item
 from .knapsack import fractional_knapsack
 from .models import Item, Recommendation, Trail
 from .priority_engine import calculate_priorities
@@ -38,5 +39,6 @@ def recommend_backpack(trail: Trail, items: Iterable[Item]) -> Recommendation:
         trilha=trail,
         itens=selected,
         valor_total=sum(item.valor_base * item.quantidade_padrao for item in selected),
+        justificativas={item.nome: explain_item(item, trail) for item in selected},
         avisos=tuple(warnings),
     )
