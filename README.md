@@ -43,9 +43,9 @@ após a reserva dos essenciais. A ordenação terá complexidade de tempo
 a reserva de essenciais e o Knapsack Fracionário estão integrados à interface.
 É possível configurar o percurso, montar a mochila, consultar o resultado e
 baixar um checklist. Quatro cenários simulados preenchem o formulário: Rota do
-sol, Além do horizonte, Serra gelada e Caminho das águas. A seleção e edição do
-estoque, as justificativas detalhadas e a comparação jogador × algoritmo
-permanecem nas próximas etapas.
+sol, Além do horizonte, Serra gelada e Caminho das águas. Também estão disponíveis seleção e edição do
+estoque, itens personalizados, justificativas, tabela Valor/Peso e desafio
+jogador × algoritmo.
 
 ## Screenshots
 
@@ -110,14 +110,16 @@ python -m pytest -q
 1. Escolha uma das quatro expedições ou preencha seu próprio percurso.
 2. Ajuste distância, duração, clima, dificuldade, isolamento, água disponível,
    número de pessoas e capacidade total de carga.
-3. Clique em **Montar minha mochila**. O sistema usa as quantidades do catálogo
-   inicial, reserva os essenciais e otimiza os consumíveis na carga restante.
-4. Confira peso, capacidade restante, pontos de utilidade e as tabelas de itens.
+3. Selecione os itens disponíveis, ajuste pesos e quantidades ou adicione um
+   item personalizado. Clique em **Montar minha mochila** para reservar os
+   equipamentos selecionados e otimizar os consumíveis na carga restante.
+4. Confira peso, capacidade restante, utilidade, justificativas e a tabela
+   Valor/Peso. No desafio, monte seus consumíveis e compare com o algoritmo.
 5. Baixe o checklist para revisar a seleção. Após editar o percurso, clique
    novamente em **Montar minha mochila** para atualizar o resultado.
 
 A capacidade e o estoque são totais para o grupo. Os equipamentos indivisíveis
-opcionais não são incluídos automaticamente e aparecem em um aviso. Se os
+opcionais começam desmarcados; se selecionados, têm seu peso reservado. Se os
 itens essenciais não couberem, a interface informa o conflito. Os pontos são
 heurísticos: não garantem suficiência dos recursos para uma trilha real.
 
@@ -140,9 +142,14 @@ TrailPack/
 │   ├── knapsack.py
 │   ├── recommendation.py
 │   ├── scenarios.py
+│   ├── explanations.py
+│   ├── item_editor.py
+│   ├── game.py
+│   ├── game_ui.py
 │   └── ui.py
 ├── assets/             # Ilustração vetorial local da paisagem
 ├── data/               # Catálogo e quatro cenários simulados
+├── scripts/            # Reprodução dos resultados
 ├── tests/              # Testes automatizados
 └── docs/               # Documentação complementar
 ```
@@ -159,5 +166,9 @@ TrailPack/
 
 ### Resultados
 
-Os cenários de uso e os resultados da otimização serão documentados após a
-implementação e a validação do fluxo de recomendação.
+Veja os [cenários e resultados reproduzíveis](docs/resultados.md), incluindo
+quatro mochilas calculadas e um desafio com eficiência de 88,26%.
+
+```bash
+python -m scripts.reproduce_results
+```
