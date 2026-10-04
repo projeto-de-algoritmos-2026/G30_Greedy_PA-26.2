@@ -201,3 +201,42 @@ def test_empty_backpack_has_no_optimization_table():
 
     assert not app.dataframe
     assert any("tabela de otimização" in message.value for message in app.info)
+
+
+def compare_game(app):
+    next(button for button in app.button if button.label == "Comparar com o algoritmo").click().run()
+    assert not app.exception
+
+
+def test_player_challenge_displays_scores_and_resets_after_new_planning():
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
+    submit(app)
+    app.number_input(key="game_quantity_0").set_value(1.0)
+    compare_game(app)
+
+    assert not app.error
+    assert {metric.label for metric in app.metric} >= {"Score jogador", "Score greedy", "Eficiência"}
+    comparison = app.session_state.game_comparison
+    assert comparison.score_jogador > 0
+    assert 0 < comparison.eficiencia_percentual <= 100
+    table = next(frame.value for frame in app.dataframe if "Quantidade jogador" in frame.value.columns)
+    assert table.loc[table["Item"] == "Água", "Quantidade jogador"].iloc[0] == 1
+    submit(app)
+    assert len(app.metric) == 3
+    assert app.number_input(key="game_quantity_0").value == 0
+
+
+def test_invalid_player_backpack_clears_previous_comparison():
+    app = AppTest.from_file(Path(__file__).resolve().parents[1] / "app.py", default_timeout=15).run()
+    app.button(key="scenario_sol").click().run()
+    submit(app)
+    compare_game(app)
+    assert len(app.metric) == 6
+    for control in app.number_input:
+        if control.key and control.key.startswith("game_quantity_"):
+            control.set_value(control.max)
+    compare_game(app)
+
+    assert len(app.error) == 1
+    assert "Mochila do jogador inválida" in app.error[0].value
+    assert len(app.metric) == 3

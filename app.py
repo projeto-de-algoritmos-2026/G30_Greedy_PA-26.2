@@ -6,6 +6,7 @@ import streamlit as st
 
 from src.models import Item, Level, Trail, TrailConditions
 from src.item_editor import render_custom_item_form, render_item_editor
+from src.game_ui import render_game
 from src.recommendation import recommend_backpack
 from src.scenarios import load_scenarios
 from src.ui import ROOT, render_header, render_recommendation
@@ -80,13 +81,19 @@ def main() -> None:
         submission = trail_form(catalog + st.session_state.custom_items)
         if submission is not None:
             st.session_state.pop("recommendation", None)
+            st.session_state.pop("game_comparison", None)
+            for key in list(st.session_state):
+                if key.startswith("game_quantity_"):
+                    del st.session_state[key]
             trail, items = submission
             st.session_state.recommendation = recommend_backpack(trail, items, include_optional_equipment=True)
+            st.session_state.recommendation_inventory = items
     except (ValueError, OSError) as exc:
         st.session_state.pop("recommendation", None)
         st.error(f"Não foi possível montar a mochila: {exc}")
     if "recommendation" in st.session_state:
         render_recommendation(st.session_state.recommendation)
+        render_game(st.session_state.recommendation.trilha, st.session_state.recommendation_inventory)
     st.caption("TrailPack · Projeto de Algoritmos · Euller & Tiago")
 
 
