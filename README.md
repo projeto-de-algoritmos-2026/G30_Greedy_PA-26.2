@@ -50,9 +50,10 @@ um exemplo de execução e os custos de tempo e espaço.
 a reserva de essenciais e o Knapsack Fracionário estão integrados à interface.
 É possível configurar o percurso, montar a mochila, consultar o resultado e
 baixar um checklist. Quatro cenários simulados preenchem o formulário: Rota do
-sol, Além do horizonte, Serra gelada e Caminho das águas. Também estão disponíveis seleção e edição do
-estoque, itens personalizados, justificativas, tabela Valor/Peso e desafio
-jogador × algoritmo.
+sol, Além do horizonte, Serra gelada e Caminho das águas. Também é possível
+selecionar e editar o estoque, adicionar itens personalizados, consultar as
+justificativas e a tabela de otimização e comparar a mochila do jogador com
+a solução gulosa no Desafio TrailPack.
 
 ## Screenshots
 
@@ -68,12 +69,13 @@ jogador × algoritmo.
 
 **Linguagem:** Python 3.10+<br>
 **Framework:** Streamlit<br>
-**Bibliotecas previstas:** Pandas para tabelas e Pytest para testes
+**Bibliotecas:** Pandas para tabelas e Pytest para testes
 
 Pré-requisitos:
 
 - Python 3.10 ou superior;
 - Git;
+- acesso à internet para clonar o projeto e instalar as dependências;
 - acesso ao repositório no GitHub, enquanto ele estiver privado.
 
 Clone o projeto e entre no diretório:
@@ -83,52 +85,84 @@ git clone https://github.com/projeto-de-algoritmos-2026/TrailPack.git
 cd TrailPack
 ```
 
-Crie e ative um ambiente virtual:
+Na raiz do projeto, crie e ative um ambiente virtual no Linux ou macOS:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-No Windows, ative o ambiente pelo PowerShell:
+No Windows, crie e ative o ambiente pelo PowerShell:
 
 ```powershell
+py -3 -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-Instale as dependências e execute a aplicação:
+Instale as dependências no ambiente ativo:
 
 ```bash
 python -m pip install -r requirements.txt
-streamlit run app.py
+```
+
+## Execução
+
+Com o ambiente virtual ativo e o terminal na raiz do projeto:
+
+```bash
+python -m streamlit run app.py
 ```
 
 O Streamlit informará o endereço local da aplicação, normalmente
-`http://localhost:8501`.
+`http://localhost:8501`. Abra esse endereço no navegador e mantenha o terminal
+aberto enquanto usa a aplicação. Para encerrar, pressione **Ctrl+C**.
 
-Para executar os testes automatizados:
+Não são necessárias chaves de API, banco de dados ou arquivo `.env` para
+executar o projeto localmente. O catálogo e os cenários são lidos de `data/`.
+
+O [guia de instalação e execução](docs/instalacao.md) detalha a preparação do
+ambiente, os comandos para Windows, os testes e a solução de problemas comuns.
+
+## Testes
+
+Na raiz do projeto e com as dependências instaladas, execute a suíte completa:
 
 ```bash
 python -m pytest -q
 ```
+
+Para executar apenas os testes do algoritmo:
+
+```bash
+python -m pytest -q tests/test_knapsack.py
+```
+
+Os testes de interface usam o Streamlit AppTest, sem precisar iniciar um
+servidor manualmente ou abrir o navegador.
 
 ## Uso
 
 1. Escolha uma das quatro expedições ou preencha seu próprio percurso.
 2. Ajuste distância, duração, clima, dificuldade, isolamento, água disponível,
    número de pessoas e capacidade total de carga.
-3. Selecione os itens disponíveis, ajuste pesos e quantidades ou adicione um
-   item personalizado. Clique em **Montar minha mochila** para reservar os
-   equipamentos selecionados e otimizar os consumíveis na carga restante.
-4. Confira peso, capacidade restante, utilidade, justificativas e a tabela
-   Valor/Peso. No desafio, monte seus consumíveis e compare com o algoritmo.
-5. Baixe o checklist para revisar a seleção. Após editar o percurso, clique
+3. Selecione os itens disponíveis e ajuste suas quantidades e pesos. Para
+   incluir um item próprio, use **Adicionar item personalizado** e depois
+   selecione-o na lista.
+4. Clique em **Montar minha mochila**. O sistema reserva os essenciais e os
+   equipamentos selecionados e otimiza os consumíveis na carga restante.
+5. Confira peso, capacidade restante, pontos de utilidade, justificativas e
+   a tabela de otimização.
+6. No **Desafio TrailPack**, escolha quantidades de consumíveis e clique em
+   **Comparar com o algoritmo** para ver os scores e a eficiência percentual.
+7. Baixe o checklist para revisar a seleção. Após editar o percurso ou estoque, clique
    novamente em **Montar minha mochila** para atualizar o resultado.
 
-A capacidade e o estoque são totais para o grupo. Os equipamentos indivisíveis
-opcionais começam desmarcados; se selecionados, têm seu peso reservado. Se os
-itens essenciais não couberem, a interface informa o conflito. Os pontos são
-heurísticos: não garantem suficiência dos recursos para uma trilha real.
+A capacidade e o estoque são totais para o grupo. Equipamentos opcionais
+entram na mochila quando selecionados pelo usuário. Se os itens reservados
+não couberem, a interface informa o conflito. Edições de estoque e itens
+personalizados ficam na sessão do usuário e não alteram o catálogo em disco.
+Os pontos são heurísticos: não garantem suficiência dos recursos para uma
+trilha real.
 
 ## Outros
 
