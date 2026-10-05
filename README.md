@@ -39,6 +39,10 @@ subproblema fracionário, considerando valores lineares e a capacidade restante
 após a reserva dos essenciais. A ordenação terá complexidade de tempo
 **O(n log n)**, seguida de uma seleção **O(n)**, para `n` recursos divisíveis.
 
+A [documentação do algoritmo e da análise de complexidade](docs/algoritmo.md)
+apresenta as etapas da implementação, a justificativa da escolha gulosa,
+um exemplo de execução e os custos de tempo e espaço.
+
 **Estado atual:** o catálogo, o perfil da trilha, as prioridades contextuais,
 a reserva de essenciais e o Knapsack Fracionário estão integrados à interface.
 É possível configurar o percurso, montar a mochila, consultar o resultado e
