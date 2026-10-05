@@ -11,10 +11,7 @@
 
 ## Apresentação do trabalho
 
-O link para o vídeo de apresentação será adicionado após a gravação.
-
-O [roteiro de cinco minutos](docs/roteiro_video.md) está preparado para revisão
-em dupla e inclui as pendências finais de entrega.
+O vídeo de apresentação pode ser encontrado [neste link](https://youtu.be/K49hXJ0Ywyg).
 
 ## Sobre
 
@@ -130,6 +127,10 @@ Na raiz do projeto e com as dependências instaladas, execute a suíte completa:
 ```bash
 python -m pytest -q
 ```
+
+![Testes automatizados passados](docs/testes.png)
+
+*Resultado da execução da suíte de testes com 100% de aprovação.*
 
 Para executar apenas os testes do algoritmo:
 
